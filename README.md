@@ -1,3 +1,5 @@
+
+
 package assessment1;
 
 class CollectingDetails {
@@ -111,9 +113,24 @@ public class Chemical {
         c1.sortByChloride();
         
         c1.displayDetail();
-        
-        
-        
        
     }
 }
+
+
+
+//This is output of code by using ClasstypeArrray
+/*St No      Station Name    Temperature pH       Chloride   Fluoride  
+--------------------------------------------------------------------------
+s5         DANDUPALYAM     28.75       8.10     40.64      0.55      
+s4         SUGALMITTA      28.91       8.02     45.91      0.82      
+s6         MELAPATULA      29.50       7.40     75.20      1.71      
+s7         ARADIGUNTA      29.82       7.57     80.50      2.00      
+s8         BHEMIGANPALLI   29.67       8.40     88.12      1.96      
+s10        MANGALAM        28.96       7.88     124.98     1.97      
+s9         BANDLAPALLE     28.70       7.07     156.01     3.01      
+s2         ETHUR           27.62       7.70     286.31     1.23      
+s1         RAMPALLI        27.05       7.20     289.11     1.22      
+s3         EDAGAPLLI       28.97       7.89     348.62     0.81      
+*/
+
