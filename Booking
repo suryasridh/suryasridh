@@ -1,0 +1,156 @@
+class Passenger {
+    private String name;
+    private char gender;
+    private String phone;
+    private String trackId;
+    private String fromPlace;
+    private String destinationPlace;
+    private int seatNo;
+
+    public Passenger(String name, char gender, String phone, String trackId, String fromPlace, String destinationPlace, int seatNo) {
+        this.name = name;
+        this.gender = gender;
+        this.phone = phone;
+        this.trackId = trackId;
+        this.fromPlace = fromPlace;
+        this.destinationPlace = destinationPlace;
+        this.seatNo = seatNo;
+    }
+
+    public String getName() { return name; }
+    public char getGender() { return gender; }
+    public String getPhone() { return phone; }
+    public String getTrackId() { return trackId; }
+    public String getFromPlace() { return fromPlace; }
+    public String getDestinationPlace() { return destinationPlace; }
+    public int getSeatNo() { return seatNo; }
+}
+
+public class Booking {
+    private Passenger[] bus;
+
+    public Booking(int size) {
+        bus = new Passenger[size];
+    }
+
+    public void ticketBooking(int seatNo, String name, char gender, String phone, String fromPlace, String destinationPlace) {
+        if (seatNo < 1 || seatNo > bus.length) {
+            System.out.println("Invalid seat number. Choose between 1 and " + bus.length);
+            return;
+        }
+        if (bus[seatNo - 1] != null) {
+            System.out.println("Seat is already booked.");
+            return;
+        }
+        String trackId = "TCKT-" + (seatNo * 100 + (int) (Math.random() * 100));
+        Passenger p1 = new Passenger(name, gender, phone, trackId, fromPlace, destinationPlace, seatNo);
+        bus[seatNo - 1] = p1;
+
+        System.out.println("Seat is confirmed:\n" +
+                "Name: " + name + "\n" +
+                "Gender: " + gender + "\n" +
+                "Phone: " + phone + "\n" +
+                "From: " + fromPlace + "\n" +
+                "Destination: " + destinationPlace + "\n" +
+                "Seat No: " + seatNo + "\n" +
+                "Track ID: " + trackId);
+    }
+
+    public void printAllPassengerData() {
+        System.out.println("SeatNo\tName\tGender\tPhone\tFrom\tDestination");
+        for (Passenger passenger : bus) {
+            if (passenger != null) {
+                System.out.println(passenger.getSeatNo() + "\t" + passenger.getName() + "\t" + passenger.getGender() + "\t" +
+                        passenger.getPhone() + "\t" + passenger.getFromPlace() + "\t" + passenger.getDestinationPlace());
+            }
+        }
+    }
+
+    public void searchByName(String name) {
+        for (Passenger passenger : bus) {
+            if (passenger != null && passenger.getName().equalsIgnoreCase(name)) {
+                System.out.println("The passenger " + name + " is travelling in seat " + passenger.getSeatNo());
+                return;
+            }
+        }
+        System.out.println("The passenger " + name + " is not found.");
+    }
+
+    public void searchBySeat(int seatNo) {
+        if (seatNo < 1 || seatNo > bus.length) {
+            System.out.println("Invalid seat number.");
+            return;
+        }
+        if (bus[seatNo - 1] != null) {
+            System.out.println("The passenger " + bus[seatNo - 1].getName() + " is travelling in this bus.");
+        } else {
+            System.out.println("The seat is not booked.");
+        }
+    }
+
+    public void cancelTicketByName(String name) {
+        for (int i = 0; i < bus.length; i++) {
+            if (bus[i] != null && bus[i].getName().equalsIgnoreCase(name)) {
+                bus[i] = null;
+                System.out.println("The ticket for " + name + " is cancelled.");
+                return;
+            }
+        }
+        System.out.println("No ticket found for " + name + ".");
+    }
+
+    public void cancelBySeat(int seatNo) {
+        if (seatNo < 1 || seatNo > bus.length) {
+            System.out.println("Invalid seat number.");
+            return;
+        }
+        if (bus[seatNo - 1] != null) {
+            System.out.println("Cancelling ticket for " + bus[seatNo - 1].getName());
+            bus[seatNo - 1] = null;
+        } else {
+            System.out.println("The seat is not booked.");
+        }
+    }
+
+    public void availableSeats() {
+        System.out.print("Available Seats: ");
+        boolean found = false;
+        for (int i = 0; i < bus.length; i++) {
+            if (bus[i] == null) {
+                System.out.print((i + 1) + " ");
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.print("No available seats.");
+        }
+        System.out.println();
+    }
+}
+
+// Main class
+public class RedBus {
+    public static void main(String[] args) {
+        Booking book = new Booking(5);
+        book.ticketBooking(3, "Sid", 'M', "234567", "BLR", "DVG");
+        book.ticketBooking(1, "Nanu", 'M', "186534", "DVG", "BLR");
+        book.ticketBooking(2, "Ninu", 'M', "234567", "BLR", "DVG");
+        book.ticketBooking(1, "Avlu", 'F', "134967", "BLR", "MYS");  // Already booked, should fail
+
+        System.out.println("\nAll Passengers Data:");
+        book.printAllPassengerData();
+
+        System.out.println("\n************************");
+        book.searchByName("Ninu");
+
+        System.out.println("\n************************");
+        book.searchBySeat(3);
+
+        System.out.println("\n************************");
+        book.cancelTicketByName("Nanu");
+        book.cancelTicketByName("Nanu");  // Trying to cancel again, should fail
+
+        System.out.println("\n************************");
+        book.availableSeats();
+    }
+}
